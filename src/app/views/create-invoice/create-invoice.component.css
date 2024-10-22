@@ -1,0 +1,35 @@
+/* Add the necessary styling similar to the previous one or customize as needed */
+
+.container {
+  max-width: 94%;
+}
+
+.card {
+  border-radius: 10px;
+}
+
+.product-line-items .form-control {
+  max-width: 100px;
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.btn-link {
+  color: #007bff;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 10px;
+  }
+
+  .product-line-items .form-control {
+    max-width: 80px;
+  }
+
+  .invoice-preview table {
+    font-size: 14px;
+  }
+}

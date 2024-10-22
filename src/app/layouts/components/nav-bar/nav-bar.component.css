@@ -14,8 +14,6 @@
   /* Optional: Change navbar background on scroll */
   .navbar.scrolled {
     background-color: #f8f9fa;
-
-    
     transition: background-color 0.3s ease;
   }
   .navbar{
@@ -26,3 +24,75 @@
   hr{
     margin: 0;
   }
+
+
+/* icon */
+.btn-outline-icon{
+  padding: 5px;
+  background-color: #f5f5f7;
+  border: 1px solid #e8e8e8;
+  border-radius: 50%;
+}
+
+.dropdown{
+  margin: 0%;
+  padding: 0%;
+}
+
+.dropdown-toggle{
+  border: none;
+}
+
+
+
+.notification-list {
+  max-width: 250px; /* Control the width of the popover */
+}
+
+.notification-item {
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notification-item span {
+  font-weight: bold;
+}
+
+.notification-item small {
+  font-size: 0.8rem;
+}
+
+
+.position-relative {
+  position: relative;
+}
+
+.position-absolute {
+  position: absolute;
+}
+
+.translate-middle {
+  transform: translate(-50%, -50%);
+}
+
+/* Styling for the red dot */
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.border-light {
+  border-color: #f8f9fa !important;
+}
+
+.p-1 {
+  padding: 0.25rem !important;
+}
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+

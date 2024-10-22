@@ -1,50 +1,94 @@
 <nav class="navbar navbar-expand-sm">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <!-- <img  src="assets/img/logo.jpg" alt="Logo" width="42" height="42"> -->
-        <span class="fw-bold">Pay Vue</span>
-      </a>
-  
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-  
-      <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
-        <ul class="navbar-nav mx-auto">
-          <li class="nav-item">
-            <a class="nav-link active" [routerLink]="['/dashboard']" routerLinkActive="router-link-active">Dashboard</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" [routerLink]="['/bill-to-bank']" routerLinkActive="router-link-active">Collection</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link">Pricing</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Contact</a>
-          </li>
-        </ul>
-  
-        <div class="d-flex">
-          <ng-container *ngIf="!userRole; else loggedIn">
-            <button class="btn btn-sm" type="button">notifi</button>
-            <button class="btn btn-outline-primary btn-sm" type="button">setting</button>
-            <button class="btn btn-outline-primary btn-sm" type="button">Login</button>
-          </ng-container>
-          <ng-template #loggedIn>
-            <div class="dropdown">
-              <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                {{userName}}
-              </button>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">{{userRole}}</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" (click)="logOut()" >Logout</a></li>
-              </ul>
+  <div class="container-fluid">
+    <a class="navbar-brand" [routerLink]="['/']">
+      <!-- <img  src="assets/img/logo.jpg" alt="Logo" width="42" height="42"> -->
+      <span class="fw-bold">Pay Vue</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarNavDropdown">
+      <!-- Centered Links -->
+      <ul class="navbar-nav mx-auto gap-4 gap-sm-1">
+        <li class="nav-item">
+          <a class="nav-link active" [routerLink]="['/']" routerLinkActive="router-link-active">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/invoice']" routerLinkActive="router-link-active">Invoice</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/pricing']">Pricing</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/contact']">Contact</a>
+        </li>
+      </ul>
+
+      <!-- Right-side User Controls -->
+      <div class="d-flex align-items-center">
+        <ng-container *ngIf="!userRole; else loggedIn">
+          <!-- Notification Button with Popover -->
+
+          <button class="btn mx-1 px-2 btn-sm btn-outline-icon position-relative" type="button"
+            [ngbPopover]="notificationPopover" popoverTitle="Notifications" placement="bottom" triggers="hover focus">
+            <i class="bi bi-bell"></i>
+            <!-- Red dot for unread notifications -->
+            <span *ngIf="hasUnreadNotifications"
+              class="position-absolute top-0 start-95 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+          </button>
+
+          <!-- Template for Notifications -->
+          <ng-template #notificationPopover>
+            <div class="notification-list">
+              <div *ngFor="let notification of notifications" class="notification-item">
+                <span>{{ notification.message }}</span>
+                <small class="text-muted d-block">{{ notification.time }}</small>
+              </div>
             </div>
           </ng-template>
-        </div>
+
+          <!-- Settings Button -->
+          <button class="btn mx-1 px-2 btn-outline-icon btn-sm" type="button">
+            <i class="bi bi-gear"></i>
+          </button>
+
+          <!-- Profile Button -->
+          <button class="btn px-2 btn-outline-icon btn-sm" style="margin-left: 18px;" type="button">
+            <i class="bi bi-person-circle"></i>
+          </button>
+
+          <!-- Login/Register Dropdown -->
+          <div class="dropdown">
+            <button class="btn fw-bold dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              login
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">Login</a></li>
+              <li><a class="dropdown-item" href="#">Register</a></li>
+            </ul>
+          </div>
+        </ng-container>
+
+        <!-- Logged-In User Dropdown -->
+        <ng-template #loggedIn>
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              {{userName}}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a class="dropdown-item" href="#">{{userRole}}</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li><a class="dropdown-item" (click)="logOut()">Logout</a></li>
+            </ul>
+          </div>
+        </ng-template>
       </div>
     </div>
-  </nav>
-  <hr>
+  </div>
+</nav>
+<hr>

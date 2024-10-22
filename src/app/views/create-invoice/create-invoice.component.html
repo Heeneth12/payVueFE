@@ -1,0 +1,188 @@
+<app-nav-bar></app-nav-bar>
+<div class="container mt-4">
+  <div class="row">
+    <!-- Invoice Details Form Section -->
+    <div class="col-md-6">
+      <div class="card p-4 shadow-sm mb-4">
+        <h5>Invoice Details</h5>
+        <form [formGroup]="invoiceForm">
+          
+          <div class="row">
+            <!-- Customer Info (takes half of the row) -->
+            <div class="col-md-6">
+              <div class="mb-2">
+                <label for="customer" class="form-label">Customer</label>
+                <input type="text" class="form-control" formControlName="customer" readonly>
+                <small class="text-muted">{{ invoiceForm.get('customerEmail')?.value }}</small>
+              </div>
+            </div>
+    
+            <!-- Invoice Date (takes the other half of the row) -->
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="invoiceDate" class="form-label">Invoice Date</label>
+                <input type="date" class="form-control" formControlName="invoiceDate">
+              </div>
+            </div>
+          </div>
+
+          <!-- Subject -->
+          <div class="mb-2">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text" class="form-control" formControlName="subject">
+          </div>
+
+          <!-- Product Line Items -->
+          <div class="product-line-items" formArrayName="products">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5>Products</h5>
+              <button type="button" class="btn btn-primary btn-sm" (click)="addProduct()">
+                + Add Product
+              </button>
+            </div>
+
+            <!-- Product Search Modal -->
+            <div *ngIf="showProductSearch" class="card p-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h6 class="mb-0">Search Products</h6>
+                <button type="button" class="btn-close" (click)="closeProductSearch()"></button>
+              </div>
+              <input 
+                type="text" 
+                class="form-control mb-2" 
+                [(ngModel)]="searchTerm" 
+                [ngModelOptions]="{standalone: true}"
+                placeholder="Search products...">
+              <div class="list-group">
+                <button 
+                  type="button"
+                  *ngFor="let product of filteredProducts" 
+                  class="list-group-item list-group-item-action"
+                  (click)="selectProduct(product)">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      <strong>{{ product.name }}</strong>
+                      <br>
+                      <small class="text-muted">{{ product.description }}</small>
+                    </div>
+                    <span>{{ product.price | currency:'IDR':'symbol':'1.0-0' }}</span>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Product List -->
+            <div *ngFor="let product of products.controls; let i = index">
+              <div [formGroupName]="i" class="card p-3 mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <div>
+                    <strong>{{ product.get('name')?.value }}</strong>
+                    <br>
+                    <small class="text-muted">{{ product.get('description')?.value }}</small>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-outline-primary btn-sm" (click)="editProduct(i)">
+                      <i class="bi bi-pencil"></i>
+                    </button>
+                    <button type="button" class="btn btn-outline-danger btn-sm" (click)="removeProduct(i)">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="row g-2">
+                  <div class="col-4">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-control" formControlName="price" readonly>
+                  </div>
+                  <div class="col-4">
+                    <label class="form-label">Quantity</label>
+                    <input type="number" class="form-control" formControlName="quantity" min="1">
+                  </div>
+                  <div class="col-4">
+                    <label class="form-label">Tax</label>
+                    <select class="form-select" formControlName="tax">
+                      <option value="10">10%</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Discounts and Coupons -->
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" formControlName="addDiscount">
+            <label class="form-check-label" for="add-discount">Add Discount</label>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-outline-secondary">Cancel</button>
+            <button type="button" class="btn btn-primary" (click)="processInvoice()">Process Invoice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Invoice Preview Section -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-4">
+        <h5 class="mb-4">Preview</h5>
+        <div class="d-flex justify-content-end mb-3">
+          <button type="button" class="btn btn-outline-secondary me-2">PDF</button>
+          <button type="button" class="btn btn-outline-secondary me-2">Email</button>
+          <button type="button" class="btn btn-primary">Payment Page</button>
+        </div>
+        <div class="invoice-preview">
+          <h6 class="text-muted">{{ invoiceNumber }}</h6>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <div>
+              <p><strong>Invoice date:</strong> {{ invoiceForm.get('invoiceDate')?.value | date }}</p>
+              <p><strong>Billed to:</strong> {{ invoiceForm.get('customer')?.value }}</p>
+            </div>
+            <div>
+              <p><strong>Subject:</strong> {{ invoiceForm.get('subject')?.value }}</p>
+            </div>
+          </div>
+
+          <!-- Invoice Items Preview -->
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Unit Price</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of products.controls">
+                <td>
+                  {{ product.get('name')?.value }}
+                  <br>
+                  <small class="text-muted">{{ product.get('description')?.value }}</small>
+                </td>
+                <td>{{ product.get('quantity')?.value }}</td>
+                <td>{{ product.get('price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
+                <td>{{ product.get('price')?.value * product.get('quantity')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="d-flex justify-content-between">
+            <p>Subtotal</p>
+            <p>{{ calculateTotal() | currency:'IDR':'symbol':'1.0-0' }}</p>
+          </div>
+          <div *ngIf="invoiceForm.get('addDiscount')?.value" class="d-flex justify-content-between">
+            <p>Discount -10%</p>
+            <p>-{{ calculateDiscount() | currency:'IDR':'symbol':'1.0-0' }}</p>
+          </div>
+          <div class="d-flex justify-content-between">
+            <h5>Total</h5>
+            <h5>{{ calculateFinalTotal() | currency:'IDR':'symbol':'1.0-0' }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
