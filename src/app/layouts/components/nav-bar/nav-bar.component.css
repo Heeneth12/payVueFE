@@ -1,0 +1,28 @@
+/* Centering the menu on large screens */
+@media (min-width: 992px) {
+    .navbar-nav {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+  
+  /* Customizing the navbar-toggler for better visibility */
+  .navbar-toggler {
+    border: none;
+  }
+  
+  /* Optional: Change navbar background on scroll */
+  .navbar.scrolled {
+    background-color: #f8f9fa;
+
+    
+    transition: background-color 0.3s ease;
+  }
+  .navbar{
+    padding-left: 4%;
+    padding-right: 4%;
+  }
+
+  hr{
+    margin: 0;
+  }
