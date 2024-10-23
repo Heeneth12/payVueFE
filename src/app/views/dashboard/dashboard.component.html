@@ -1,1 +1,120 @@
 <app-nav-bar></app-nav-bar>
+
+<div class="container-fluid">
+    <div class="row px-2 mt-4">
+        <!-- Dashboard Section -->
+        <div class="col-md-6 col-sm-12">
+            <img class="px-2" src="assets/img/Dashboard.png" alt="" width="180">
+            <p class="text-muted py-2 px-2">Monthly review</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end align-items-center">
+            <label for="filter" class="me-2">Filter:</label>
+            <input type="text" id="filter" class="form-control" placeholder="Select Date Range">
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid pt-4 px-3">
+    <div class="row g-4 px-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
+                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #4b49ac;">
+                <div class="text-center text-white fw-bold">
+                    <p class="mb-2">Total Bill Amount</p>
+                    <h6 class="fw-bold mb-0 text-white">213782</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="box  rounded-pill shadow align-items-center justify-content-between p-2"
+                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem ;background-color: #7DA0FA;">
+                <div class="text-center text-white fw-bold">
+                    <p class="mb-2">Total IC Charges</p>
+                    <h6 class="fw-bold mb-0 text-white">2173821</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
+                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #7978E9;">
+                <div class="text-center text-white fw-bold">
+                    <p class="mb-2">Total Settled Amount</p>
+                    <h6 class="fw-bold mb-0 text-white">9802</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
+                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #F3797E">
+                <div class="text-center text-white fw-bold">
+                    <p class="mb-2">Total Pending Amount</p>
+                    <h6 class="fw-bold mb-0 text-white">0.00</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row px-2 mt-4">
+        <!-- Dashboard Section -->
+        <div class="col-md-6 col-sm-12">
+            <h4>Invoices</h4>
+            <p class="text-muted">3 total invoices</p>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="col-md-6 col-sm-12 d-flex justify-content-md-end align-items-center">
+            <div>
+                <div ngbDropdown class="d-inline-block">
+                    <button type="button" class="btn" id="dropdownBasic1" ngbDropdownToggle>
+                        Toggle dropdown
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button ngbDropdownItem>Action - 1</button>
+                        <button ngbDropdownItem>Another Action</button>
+                        <button ngbDropdownItem>Something else is here</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4">
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr>
+                <th style="background-color: #7978E9;" scope="col">Invoice ID</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Bill Date</th>
+                <th scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>#INV-2024-001</td>
+                <td>$1,200.00</td>
+                <td>2024-10-15</td>
+                <td><span class="badge bg-success">Paid</span></td>
+            </tr>
+            <tr>
+                <td>#INV-2024-002</td>
+                <td>$850.50</td>
+                <td>2024-10-18</td>
+                <td><span class="badge bg-warning text-dark">Pending</span></td>
+            </tr>
+            <tr>
+                <td>#INV-2024-003</td>
+                <td>$2,340.00</td>
+                <td>2024-10-20</td>
+                <td><span class="badge bg-danger">Overdue</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<app-footer></app-footer>
