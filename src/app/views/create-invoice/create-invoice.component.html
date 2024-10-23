@@ -6,7 +6,7 @@
       <div class="card p-4 shadow-sm mb-4">
         <h5>Invoice Details</h5>
         <form [formGroup]="invoiceForm">
-          
+
           <div class="row">
             <!-- Customer Info (takes half of the row) -->
             <div class="col-md-6">
@@ -16,7 +16,7 @@
                 <small class="text-muted">{{ invoiceForm.get('customerEmail')?.value }}</small>
               </div>
             </div>
-    
+
             <!-- Invoice Date (takes the other half of the row) -->
             <div class="col-md-6">
               <div class="mb-3">
@@ -47,18 +47,11 @@
                 <h6 class="mb-0">Search Products</h6>
                 <button type="button" class="btn-close" (click)="closeProductSearch()"></button>
               </div>
-              <input 
-                type="text" 
-                class="form-control mb-2" 
-                [(ngModel)]="searchTerm" 
-                [ngModelOptions]="{standalone: true}"
-                placeholder="Search products...">
+              <input type="text" class="form-control mb-2" [(ngModel)]="searchTerm"
+                [ngModelOptions]="{standalone: true}" placeholder="Search products...">
               <div class="list-group">
-                <button 
-                  type="button"
-                  *ngFor="let product of filteredProducts" 
-                  class="list-group-item list-group-item-action"
-                  (click)="selectProduct(product)">
+                <button type="button" *ngFor="let product of filteredProducts"
+                  class="list-group-item list-group-item-action" (click)="selectProduct(product)">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
                       <strong>{{ product.name }}</strong>
@@ -125,61 +118,90 @@
 
     <!-- Invoice Preview Section -->
     <div class="col-md-6">
-      <div class="card shadow-sm p-4">
-        <h5 class="mb-4">Preview</h5>
-        <div class="d-flex justify-content-end mb-3">
+      <div class="card shadow-sm p-2">
+        <h5 class="mb-2">Preview</h5>
+        <div class="d-flex justify-content-end mb-2">
           <button type="button" class="btn btn-outline-secondary me-2">PDF</button>
           <button type="button" class="btn btn-outline-secondary me-2">Email</button>
           <button type="button" class="btn btn-primary">Payment Page</button>
         </div>
-        <div class="invoice-preview">
-          <h6 class="text-muted">{{ invoiceNumber }}</h6>
-          <hr>
-          <div class="d-flex justify-content-between">
-            <div>
-              <p><strong>Invoice date:</strong> {{ invoiceForm.get('invoiceDate')?.value | date }}</p>
-              <p><strong>Billed to:</strong> {{ invoiceForm.get('customer')?.value }}</p>
+        <div class="invoice-preview p-1">
+          <div class="card shadow-sm p-4">
+            <div class="invoice-header d-flex justify-content-between">
+              <div>
+                <h4>Supplier Company INC</h4>
+                <p>Number: 23456789<br>VAT: 23456789<br>6622 Abshire Mills<br>United States</p>
+              </div>
+              <div class="text-end">
+                <h5>Invoice # {{ invoiceNumber }}</h5>
+                <p>Date: {{ invoiceForm.get('invoiceDate')?.value | date }}</p>
+              </div>
             </div>
-            <div>
-              <p><strong>Subject:</strong> {{ invoiceForm.get('subject')?.value }}</p>
+
+            <div class="invoice-to d-flex justify-content-between">
+              <div>
+                <strong>Billed To:</strong>
+                <p>{{ invoiceForm.get('customer')?.value }}<br>Number: 123456789<br>VAT: 123456789<br>nited States</p>
+              </div>
             </div>
-          </div>
 
-          <!-- Invoice Items Preview -->
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Qty</th>
-                <th>Unit Price</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of products.controls">
-                <td>
-                  {{ product.get('name')?.value }}
-                  <br>
-                  <small class="text-muted">{{ product.get('description')?.value }}</small>
-                </td>
-                <td>{{ product.get('quantity')?.value }}</td>
-                <td>{{ product.get('price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
-                <td>{{ product.get('price')?.value * product.get('quantity')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
-              </tr>
-            </tbody>
-          </table>
+            <table class="table mt-2">
+              <thead class="table-light">
+                <tr>
+                  <th>#</th>
+                  <th>Description</th>
+                  <th>Price</th>
+                  <th>Qty</th>
+                  <th>VAT</th>
+                  <th>Subtotal</th>
+                  <th>Total (Subtotal + VAT)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of products.controls; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    {{ product.get('name')?.value }}
+                    <br>
+                    <small class="text-muted">{{ product.get('description')?.value }}</small>
+                  </td>
+                  <td>{{ product.get('price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
+                  <td>{{ product.get('quantity')?.value }}</td>
+                  <td>20%</td>
+                  <td>{{ product.get('price')?.value * product.get('quantity')?.value | currency:'IDR':'symbol':'1.0-0'
+                    }}</td>
+                  <td>{{ (product.get('price')?.value * product.get('quantity')?.value * 1.2) |
+                    currency:'IDR':'symbol':'1.0-0' }}</td>
+                </tr>
+              </tbody>
+            </table>
 
-          <div class="d-flex justify-content-between">
-            <p>Subtotal</p>
-            <p>{{ calculateTotal() | currency:'IDR':'symbol':'1.0-0' }}</p>
-          </div>
-          <div *ngIf="invoiceForm.get('addDiscount')?.value" class="d-flex justify-content-between">
-            <p>Discount -10%</p>
-            <p>-{{ calculateDiscount() | currency:'IDR':'symbol':'1.0-0' }}</p>
-          </div>
-          <div class="d-flex justify-content-between">
-            <h5>Total</h5>
-            <h5>{{ calculateFinalTotal() | currency:'IDR':'symbol':'1.0-0' }}</h5>
+            <div class="d-flex justify-content-between">
+              <p>Net Total</p>
+              <p>{{ calculateTotal() | currency:'IDR':'symbol':'1.0-0' }}</p>
+            </div>
+            <div class="d-flex justify-content-between">
+              <p>VAT Total</p>
+              <!-- <p>{{ calculateVAT() | currency:'IDR':'symbol':'1.0-0' }}</p> -->
+            </div>
+            <div class="d-flex justify-content-between">
+              <h5>Total</h5>
+              <h5>{{ calculateFinalTotal() | currency:'IDR':'symbol':'1.0-0' }}</h5>
+            </div>
+
+            <hr>
+
+            <div class="payment-details">
+              <h6>Payment Details</h6>
+              <p>Bank of Banks<br>Bank/Sort Code: 1234567<br>Account Number: 123456678<br>Payment Reference: {{
+                invoiceNumber }}</p>
+            </div>
+            <hr>
+            <div class="notes">
+              <p><strong>Notes</strong></p>
+              <p>Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing industries for
+                previewing layouts and visual mockups.</p>
+            </div>
           </div>
         </div>
       </div>
