@@ -47,7 +47,7 @@
                 <h6 class="mb-0">Search Products</h6>
                 <button type="button" class="btn-close" (click)="closeProductSearch()"></button>
               </div>
-              <input type="text" class="form-control mb-2" [(ngModel)]="searchTerm"
+              <input type="text" class="form-control mb-2" style="max-width: 100%;" [(ngModel)]="searchTerm"
                 [ngModelOptions]="{standalone: true}" placeholder="Search products...">
               <div class="list-group">
                 <button type="button" *ngFor="let product of filteredProducts"
@@ -117,13 +117,14 @@
     </div>
 
     <!-- Invoice Preview Section -->
-    <div class="col-md-6">
+    <div class="col-md-6 px-1">
       <div class="card shadow-sm p-2">
-        <h5 class="mb-2">Preview</h5>
-        <div class="d-flex justify-content-end mb-2">
-          <button type="button" class="btn btn-outline-secondary me-2">PDF</button>
-          <button type="button" class="btn btn-outline-secondary me-2">Email</button>
-          <button type="button" class="btn btn-primary">Payment Page</button>
+        <div class="d-flex justify-content-between" >
+          <h5 class="mb-2">Preview</h5>
+          <div class="d-flex justify-content-end mb-2">
+            <button type="button" class="btn mx-1 px-2 btn-sm btn-outline-icon me-2"><i class="bi bi-filetype-pdf"></i></button>
+            <button type="button" class="btn  mx-1 px-2 btn-sm btn-outline-icon me-2"><i class="bi bi-qr-code-scan"></i></button>
+          </div>
         </div>
         <div class="invoice-preview p-1">
           <div class="card shadow-sm p-4">
@@ -163,7 +164,7 @@
                   <td>
                     {{ product.get('name')?.value }}
                     <br>
-                    <small class="text-muted">{{ product.get('description')?.value }}</small>
+                    <!-- <small class="text-muted">{{ product.get('description')?.value }}</small> -->
                   </td>
                   <td>{{ product.get('price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
                   <td>{{ product.get('quantity')?.value }}</td>

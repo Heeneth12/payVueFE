@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavBarComponent } from "../../layouts/components/nav-bar/nav-bar.component";
 import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
 interface Product {
   id: number;
   name: string;
@@ -23,6 +22,8 @@ export class CreateInvoiceComponent {
   searchTerm: string = '';
   showProductSearch: boolean = false;
   selectedProductIndex: number | null = null;
+  currentDate: Date = new Date();
+  formattedDate: string = this.currentDate.toISOString().split('T')[0];
 
   // Sample product list - replace with your actual product data or API call
   productList: Product[] = [
@@ -37,7 +38,7 @@ export class CreateInvoiceComponent {
       customer: ['John Smith', Validators.required],
       customerEmail: ['john_s@gmail.com', Validators.required],
       subject: ['Service per June 2023', Validators.required],
-      invoiceDate: [new Date(), Validators.required],
+      invoiceDate: [this.formattedDate , Validators.required],
       addDiscount: [true],
       products: this.fb.array([])
     });

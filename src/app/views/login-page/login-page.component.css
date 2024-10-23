@@ -1,0 +1,283 @@
+/* login-page.component.css */
+
+/* Card Styling */
+.card {
+  border-radius: 1.5rem;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+  border: none;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* Header Styling */
+.card-header {
+  background: linear-gradient(135deg, #0d6efd, #0099ff);
+  border-bottom: 0;
+  padding: 1.5rem 1rem 0.5rem;
+}
+
+/* Navigation Tabs */
+.nav-tabs {
+  border: none;
+}
+
+.nav-tabs .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #fff;
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.nav-tabs .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-tabs .nav-link:hover::after {
+  width: 80%;
+}
+
+/* Form Controls */
+.form-control, .input-group-text {
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.input-group .form-control {
+  border-left: none;
+}
+
+.input-group-text {
+  background-color: #fff;
+  border-right: none;
+  color: #6c757d;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border-color: #0d6efd;
+}
+
+.input-group:focus-within .input-group-text {
+  border-color: #0d6efd;
+  color: #0d6efd;
+}
+
+/* Form Labels */
+.form-label {
+  font-weight: 500;
+  color: #495057;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn-primary {
+  padding: 0.8rem;
+  font-weight: 500;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #0d6efd, #0099ff);
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  background: #ccc;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Checkbox Styling */
+.form-check-input {
+  cursor: pointer;
+  border-color: #dee2e6;
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+.form-check-label {
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Invalid State Styling */
+.is-invalid {
+  border-color: #dc3545;
+  background-image: none;
+}
+
+.invalid-feedback {
+  font-size: 0.8rem;
+  color: #dc3545;
+  margin-top: 0.25rem;
+}
+
+/* Alert Styling */
+.alert {
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: none;
+  animation: slideDown 0.3s ease-out;
+}
+
+.alert-success {
+  background-color: #d1e7dd;
+  color: #0f5132;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-width: 0.15em;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Row Spacing */
+.row > [class^="col-"] {
+  padding: 0.5rem;
+}
+
+/* Card Body Padding */
+.card-body {
+  padding: 2rem;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin: 1rem;
+    border-radius: 1rem;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .btn-primary {
+    padding: 0.7rem;
+  }
+
+  .form-control, .input-group-text {
+    padding: 0.6rem 0.8rem;
+  }
+}
+
+/* Input Focus Animation */
+.form-control:focus ~ .input-group-text,
+.input-group-text:focus ~ .form-control {
+  transform: translateY(-1px);
+}
+
+/* Hover Effects */
+.form-control:hover,
+.input-group-text:hover {
+  border-color: #adb5bd;
+}
+
+/* Password Toggle Button */
+.password-toggle {
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #0d6efd;
+}
+
+/* Terms Link Styling */
+.terms-link {
+  color: #0d6efd;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Form Group Spacing */
+.mb-3 {
+  margin-bottom: 1.5rem !important;
+}
+
+/* Transition for All Interactive Elements */
+a, button, input, .form-check-input {
+  transition: all 0.3s ease;
+}
+
+/* Error Shake Animation */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
