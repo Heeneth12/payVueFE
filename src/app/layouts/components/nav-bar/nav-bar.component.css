@@ -1,98 +1,237 @@
-/* Centering the menu on large screens */
-@media (min-width: 992px) {
-    .navbar-nav {
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-  
-  /* Customizing the navbar-toggler for better visibility */
-  .navbar-toggler {
-    border: none;
-  }
-  
-  /* Optional: Change navbar background on scroll */
-  .navbar.scrolled {
-    background-color: #f8f9fa;
-    transition: background-color 0.3s ease;
-  }
-  .navbar{
-    padding-left: 4%;
-    padding-right: 4%;
-  }
-
-  hr{
-    margin: 0;
-  }
-
-
-/* icon */
-.btn-outline-icon{
-  padding: 5px;
-  background-color: #f5f5f7;
-  border: 1px solid #e8e8e8;
-  border-radius: 50%;
+/* Base Navbar Styles */
+.navbar {
+  background: linear-gradient(to right, #004080, #005bb5);
+  padding: 0.5rem 1.5rem;
+  transition: all 0.3s ease;
 }
 
-.dropdown{
-  margin: 0%;
-  padding: 0%;
+/* Logo */
+.nav-logo {
+  height: 40px;
+  transition: transform 0.3s ease;
 }
 
-.dropdown-toggle{
+.nav-logo:hover {
+  transform: scale(1.05);
+}
+
+/* Navigation Links */
+.navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.9) !important;
+  padding: 0.7rem 1rem;
+  margin: 0 0.2rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar-nav .nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.navbar-nav .nav-link.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white !important;
+}
+
+/* Search Bar */
+.search-wrapper {
+  position: relative;
+  max-width: 300px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.5rem 1rem 0.5rem 2.5rem;
   border: none;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
 }
 
-
-
-.notification-list {
-  max-width: 250px; /* Control the width of the popover */
+.search-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.notification-item {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+.search-input:focus {
+  background: rgba(255, 255, 255, 0.15);
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
-.notification-item:last-child {
-  border-bottom: none;
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.notification-item span {
-  font-weight: bold;
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.notification-item small {
-  font-size: 0.8rem;
-}
-
-
-.position-relative {
+.btn-icon {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: all 0.3s ease;
   position: relative;
 }
 
-.position-absolute {
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* Notification Badge */
+.notification-badge {
   position: absolute;
+  top: -6px;
+  right: -5px;
+  background: #ff4444;
+  color: white;
+  border-radius: 50%;
+  padding: 0.1rem 0.4rem;
+  font-size: 0.6rem;
+  border: 1px solid #004080;
 }
 
-.translate-middle {
-  transform: translate(-50%, -50%);
+.dropdown-toggle::after {
+    display:none;
 }
 
-/* Styling for the red dot */
-.bg-danger {
-  background-color: #dc3545 !important;
+/* Profile Section */
+.profile-wrapper {
+  margin-left: 1rem;
 }
 
-.border-light {
-  border-color: #f8f9fa !important;
+.profile-toggle {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
-.p-1 {
-  padding: 0.25rem !important;
+.profile-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.rounded-circle {
-  border-radius: 50% !important;
+.profile-image {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
+.profile-name {
+  font-weight: 500;
+}
+
+/* Dropdown Menus */
+.notification-menu, .profile-menu {
+  background: white;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem;
+  min-width: 180px;
+  margin-top: 0.5rem;
+}
+
+.notification-scroll {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+  background: #f8f9fa;
+}
+
+.notification-item.unread {
+  background: #f0f7ff;
+}
+
+.notification-text {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.notification-time {
+  color: #6c757d;
+  font-size: 0.8rem;
+}
+
+/* Mobile Menu Button */
+.navbar-toggler {
+  border: none;
+  padding: 0.5rem;
+  border-radius: 6px;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.close-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .search-wrapper {
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .action-buttons {
+    margin-top: 1rem;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .navbar-collapse {
+    background: #004080;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .profile-wrapper {
+    margin: 1rem 0;
+    width: 100%;
+  }
+
+  .profile-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+}

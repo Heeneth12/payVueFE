@@ -1,0 +1,196 @@
+/* Background */
+body {
+  background-color: #f0f2f5; /* Slightly softer background for better contrast */
+}
+
+/* Main Card */
+.card {
+  border: none;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: #ffffff;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+/* Primary Buttons */
+.btn-primary {
+  background-color: #6681e8 !important;
+  border-color: #6681e8 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.btn-primary:hover {
+  background-color: #556bd1 !important; /* Darken on hover */
+  border-color: #556bd1 !important;
+}
+
+/* Secondary Buttons */
+.btn-outline-dark {
+  border-color: #82878c;
+  color: #212328;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 5px;
+}
+
+.btn-outline-dark:hover {
+  background-color: #f4f4f7 !important;
+  border-color: #82878c !important;
+}
+
+/* Title and Subtitle */
+h5, .card-title {
+  color: #212328;
+  font-weight: 600;
+}
+
+.card-subtitle {
+  color: #82878c;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Links */
+.text-primary, .customize-columns-link {
+  color: #6681e8 !important;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.text-primary:hover, .customize-columns-link:hover {
+  text-decoration: underline;
+  color: #556bd1 !important; /* Darker shade on hover */
+}
+
+/* Badges */
+.badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.badge.bg-primary {
+  background-color: #6681e8 !important;
+  color: #ffffff;
+}
+
+.badge.bg-primary.open-status {
+  background-color: #32c68a; /* Example color for 'Open' badge */
+}
+
+/* Details Sidebar */
+.sidebar-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 15px;
+  color: #212328;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Icon Styling */
+.list-group-item i {
+  color: #6681e8;
+  font-size: 1.4rem;
+  margin-right: 10px;
+}
+
+/* History Section */
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-item p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #82878c;
+}
+
+/* Table Styling */
+.table {
+  background-color: #ffffff;
+  color: #212328;
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+.table th {
+  color: #212328;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f2f5;
+}
+
+.table td {
+  color: #82878c;
+  border-top: none;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+  padding: 12px;
+}
+
+/* Invoice PDF Button */
+.invoice-pdf-button {
+  background-color: #6681e8;
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.invoice-pdf-button:hover {
+  background-color: #556bd1;
+}
+
+/* Ask Us Section */
+.ask-us-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.ask-us-card h6 {
+  color: #212328;
+  font-weight: 600;
+}
+
+.ask-us-card p {
+  color: #82878c;
+  font-size: 0.9rem;
+}
+
+.ask-us-card .btn {
+  background-color: #6681e8;
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 5px;
+  padding: 8px 20px;
+}
+
+.ask-us-card .btn:hover {
+  background-color: #556bd1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .card, .sidebar-card, .ask-us-card {
+    padding: 10px;
+  }
+
+  .btn {
+    width: 100%; /* Full width buttons on mobile */
+    margin-top: 10px;
+  }
+
+  .history-item p, .table th, .table td {
+    font-size: 0.8rem;
+  }
+}
