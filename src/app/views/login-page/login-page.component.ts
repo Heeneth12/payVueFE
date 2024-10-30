@@ -55,9 +55,9 @@ export class LoginPageComponent {
       this.isLoading = true;
       this.errorMessage = '';
       const { number, password } = this.loginForm.value;
-      
-      this.payVueService.loginUser(number, password).subscribe({
-        next: (response) => {
+  
+      this.payVueService.loginUser(number, password,
+         (response:any) => {
           if(response.message === "success"){
             this.isLoading = false;
             this.successMessage = 'Login successful!';
@@ -67,12 +67,12 @@ export class LoginPageComponent {
             
           }
         },
-        error: (error) => {
+      (error:any) => {
           this.isLoading = false;
           this.errorMessage = error.error?.message || 'Login failed. Please try again.';
           console.error('Login error:', error);
         }
-      });
+      );
     }
   }
 
@@ -88,20 +88,20 @@ export class LoginPageComponent {
         password: this.registerForm.value.password
       };
 
-      this.payVueService.registerUser(userData).subscribe({
-        next: (response) => {
+      this.payVueService.registerUser(userData,
+        (response:any) => {
           this.isLoading = false;
           this.successMessage = 'Registration successful!';
           console.log('Registration successful', response);
           // Optionally switch to login mode after successful registration
           setTimeout(() => this.switchMode(true), 2000);
         },
-        error: (error) => {
+        (error:any) => {
           this.isLoading = false;
           this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
           console.error('Registration error:', error);
         }
-      });
+      );
     }
   }
 

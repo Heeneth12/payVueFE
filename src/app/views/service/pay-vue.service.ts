@@ -1,27 +1,48 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, throwError } from 'rxjs';
+import { StockItem } from '../../layouts/model/stockItem.model';
+import { HttpServicesService } from '../../layouts/http-svc/http.services.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PayVueService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private httpService: HttpServicesService) { }
 
   private apiUrl = 'http://localhost:8080'; // Base API URL
 
-  // POST request to login a user
-  loginUser(number: string, password: string): Observable<any> {
-    const url = `${this.apiUrl}/user/login`;
+  //POST request to login a user
+  loginUser(number: string, password: string, successfn: any, errorfn: any):any{
     const body = { number, password };
-    return this.http.post(url, body);
+    return this.httpService.postHttp(`${this.apiUrl}/user/login`, body, successfn, errorfn)
+
+  }
+  registerUser(userDate:any, successfn: any, errorfn: any){
+     return this.httpService.postHttp(`${this.apiUrl}/user/register`, userDate, successfn, errorfn)
   }
 
-  // Example of a POST request to register a new user
-  registerUser(userData: any): Observable<any> {
-    const url = `${this.apiUrl}/user/register`;
-    return this.http.post(url, userData);
+    // Stock API methods
+
+
+  // Create or Update Stock
+  addStock(stock: StockItem ,successfn: any, errorfn: any): any {
+    return this.httpService.postHttp(`${this.apiUrl}/stock` , stock ,successfn, errorfn )
   }
 
+  // Get All Stocks
+  getAllStocks(successfn:any, errorfn:any):any {
+    return this.httpService.getHttp(`${this.apiUrl}/stock/all`, successfn,errorfn)
+  }
+
+  // Get Stock by ID
+  getStockById(id: string ,successfn:any, errorfn:any): any {
+    return this.httpService.getHttp(`${this.apiUrl}/stock/${id}`, successfn,errorfn )
+  }
+
+  // Delete Stock by ID
+  deleteStockById(id: string,successfn:any, errorfn:any): any {
+    return this.httpService.deleteHttp(`${this.apiUrl}/stock/${id}`, successfn, errorfn)
+  }
 }
