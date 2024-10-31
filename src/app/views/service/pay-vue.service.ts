@@ -23,8 +23,22 @@ export class PayVueService {
      return this.httpService.postHttp(`${this.apiUrl}/user/register`, userDate, successfn, errorfn)
   }
 
-    // Stock API methods
+  //Invoice
 
+  createInvoice(invoice:any,successfn: any, errorfn: any){
+    this.httpService.postHttp(`${this.apiUrl}/invoice/create`, invoice , successfn , errorfn)
+  }
+
+  getAllInvoices(successfn: any, errorfn: any):any{
+    this.httpService.getHttp(`${this.apiUrl}/invoice/all`, successfn, errorfn)
+
+  }
+
+  getInvoiceById( invoiceId:string , successfn: any, errorfn: any):any{
+    this,this.httpService.getHttp(`${this.apiUrl}/invoice/${invoiceId}`, successfn , errorfn)
+  }
+
+  // Stock API methods
 
   // Create or Update Stock
   addStock(stock: StockItem ,successfn: any, errorfn: any): any {

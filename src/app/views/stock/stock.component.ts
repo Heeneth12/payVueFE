@@ -5,12 +5,13 @@ import { NavBarComponent } from "../../layouts/components/nav-bar/nav-bar.compon
 import { StockItem } from '../../layouts/model/stockItem.model';
 import { StockMetric } from '../../layouts/model/stockMetric.model';
 import { PayVueService } from '../service/pay-vue.service';
+import { MetricsCardsComponent } from "../../layouts/components/metrics-cards/metrics-cards.component";
 
 
 @Component({
   selector: 'app-stock',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavBarComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, NavBarComponent, MetricsCardsComponent],
   templateUrl: './stock.component.html',
   styleUrls: ['./stock.component.css']
 })
