@@ -12,16 +12,16 @@
             <div class="col-md-6">
               <div class="mb-2">
                 <label for="customer" class="form-label">Customer</label>
-                <input type="text" class="form-control" formControlName="customer" readonly>
-                <small class="text-muted">{{ invoiceForm.get('customerEmail')?.value }}</small>
+                <input type="text" class="form-control" formControlName="issuedTo">
+                <small class="text-muted">{{ invoiceForm.get('issuedTo')?.value }}</small>
               </div>
             </div>
 
             <!-- Invoice Date (takes the other half of the row) -->
             <div class="col-md-6">
               <div class="mb-3">
-                <label for="invoiceDate" class="form-label">Invoice Date</label>
-                <input type="date" class="form-control" formControlName="invoiceDate">
+                <label for="createdAt" class="form-label">Invoice Date</label>
+                <input type="date" class="form-control" formControlName="createdAt">
               </div>
             </div>
           </div>
@@ -54,11 +54,11 @@
                   class="list-group-item list-group-item-action" (click)="selectProduct(product)">
                   <div class="d-flex justify-content-between align-items-center">
                     <div>
-                      <strong>{{ product.name }}</strong>
+                      <strong>{{ product.stock_name }}</strong>
                       <br>
-                      <small class="text-muted">{{ product.description }}</small>
+                      <small class="text-muted">{{ product.stock_type }}</small>
                     </div>
-                    <span>{{ product.price | currency:'IDR':'symbol':'1.0-0' }}</span>
+                    <span>{{ product.stock_price| currency:'IDR':'symbol':'1.0-0' }}</span>
                   </div>
                 </button>
               </div>
@@ -69,9 +69,9 @@
               <div [formGroupName]="i" class="card p-3 mb-2">
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <div>
-                    <strong>{{ product.get('name')?.value }}</strong>
+                    <strong>{{ product.get('stock_name')?.value }}</strong>
                     <br>
-                    <small class="text-muted">{{ product.get('description')?.value }}</small>
+                    <small class="text-muted">{{ product.get('stock_type')?.value }}</small>
                   </div>
                   <div class="d-flex gap-2">
                     <button type="button" class="btn btn-outline-primary btn-sm" (click)="editProduct(i)">
@@ -85,7 +85,7 @@
                 <div class="row g-2">
                   <div class="col-4">
                     <label class="form-label">Price</label>
-                    <input type="number" class="form-control" formControlName="price" readonly>
+                    <input type="number" class="form-control" formControlName="stock_price" readonly>
                   </div>
                   <div class="col-4">
                     <label class="form-label">Quantity</label>
@@ -162,16 +162,16 @@
                 <tr *ngFor="let product of products.controls; let i = index">
                   <td>{{ i + 1 }}</td>
                   <td>
-                    {{ product.get('name')?.value }}
+                    {{ product.get('stock_name')?.value }}
                     <br>
                     <!-- <small class="text-muted">{{ product.get('description')?.value }}</small> -->
                   </td>
-                  <td>{{ product.get('price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
+                  <td>{{ product.get('stock_price')?.value | currency:'IDR':'symbol':'1.0-0' }}</td>
                   <td>{{ product.get('quantity')?.value }}</td>
                   <td>20%</td>
-                  <td>{{ product.get('price')?.value * product.get('quantity')?.value | currency:'IDR':'symbol':'1.0-0'
+                  <td>{{ product.get('stock_price')?.value * product.get('quantity')?.value | currency:'IDR':'symbol':'1.0-0'
                     }}</td>
-                  <td>{{ (product.get('price')?.value * product.get('quantity')?.value * 1.2) |
+                  <td>{{ (product.get('stock_price')?.value * product.get('quantity')?.value * 1.2) |
                     currency:'IDR':'symbol':'1.0-0' }}</td>
                 </tr>
               </tbody>

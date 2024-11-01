@@ -1,0 +1,180 @@
+<!-- Top Navigation -->
+<app-nav-bar></app-nav-bar>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Search and Filter Bar -->
+  <div class="d-flex gap-1 w-100">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..."
+        class="search-input">
+    </div>
+    <div class="category-filter">
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="filterItems()" class="category-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{category}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Metrics Cards -->
+  <app-metrics-cards [metrics]="metrics" ></app-metrics-cards>
+
+  <!-- Stock Table Section -->
+  <div class="table-section shadow">
+    <div class="table-header">
+      <h5>Inventory Items</h5>
+      <button class="btn btn-primary btn-sm p-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        <i class="bi bi-plus-circle"></i>
+        Add New Item
+      </button>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Type</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total Value</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filteredItems; trackBy: trackByItemId">
+            <td>{{item.stock_name}}</td>
+            <td>{{item.stock_type}}</td>
+            <td>
+              <input type="number" class="quantity-input" [(ngModel)]="item.stock_quantity"
+                (ngModelChange)="updateItem(item)">
+            </td>
+            <td>{{item.stock_price | currency}}</td>
+            <td>{{item.stock_price * item.stock_quantity | currency}}</td>
+            <td>{{item.updated_at}}</td>
+            <td class="actions-cell">
+              <button class="action-btn edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editItem(item)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn delete-btn" (click)="deleteItem(item.stock_uuid)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div #staticBackdrop class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h4 class="modal-title fw-bold text-primary">{{editMode ? 'Edit Item' : 'Add New Item'}}</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
+          <!-- Item Name - Full Width -->
+          <div class="mb-2">
+            <label for="name" class="form-label fw-semibold">Item Name</label>
+            <input type="text" class="form-control form-control-lg" id="name" formControlName="name" placeholder="Enter item name">
+            <div class="text-danger small mt-1" *ngIf="itemForm.controls.name.invalid && itemForm.controls.name.touched">
+              Item Name is required
+            </div>
+          </div>
+
+          <!-- Category - Full Width -->
+          <div class="mb-2">
+            <label for="category" class="form-label fw-semibold">Category</label>
+            <select class="form-select form-select-lg" id="category" formControlName="category">
+              <option value="" disabled>Select Category</option>
+              <option *ngFor="let category of categories" [value]="category">
+                {{category}}
+              </option>
+            </select>
+            <div class="text-danger small mt-1" *ngIf="itemForm.controls.category.invalid && itemForm.controls.category.touched">
+              Category is required
+            </div>
+          </div>
+
+          <!-- Two columns layout for number inputs -->
+          <div class="row g-2">
+            <!-- Quantity -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="quantity" class="form-label fw-semibold">Quantity</label>
+                <div class="input-group">
+                  <input type="number" class="form-control form-control-lg" id="quantity" formControlName="quantity" min="1" step="1">
+                  <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                </div>
+                <div class="text-danger small mt-1" *ngIf="itemForm.controls.quantity.invalid && itemForm.controls.quantity.touched">
+                  Quantity must be at least 1
+                </div>
+              </div>
+            </div>
+
+            <!-- Unit Price -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="unitPrice" class="form-label fw-semibold">Price</label>
+                <div class="input-group">
+                  <span class="input-group-text">$</span>
+                  <input type="number" class="form-control form-control-lg" id="price" formControlName="price" min="0.01" step="0.01">
+                </div>
+                <div class="text-danger small mt-1" *ngIf="itemForm.controls.price.invalid && itemForm.controls.price.touched">
+                  Unit Price is required and must be positive
+                </div>
+              </div>
+            </div>
+
+            <!-- Stock Unit -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="unit" class="form-label fw-semibold">Units</label>
+                <div class="input-group">
+                  <input type="number" class="form-control form-control-lg" id="units" formControlName="units" min="1" step="1">
+                  <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
+                </div>
+                <div class="text-danger small mt-1" *ngIf="itemForm.controls.units.invalid && itemForm.controls.units.touched">
+                  Stock Unit is required and must be positive
+                </div>
+              </div>
+            </div>
+
+            <!-- Stock Unit Size -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="unitSize" class="form-label fw-semibold">Unit Size</label>
+                <div class="input-group">
+                  <input type="number" class="form-control form-control-lg" id="unitSize" formControlName="unitSize" min="1" step="1">
+                  <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                </div>
+                <div class="text-danger small mt-1" *ngIf="itemForm.controls.unitSize.invalid && itemForm.controls.unitSize.touched">
+                  Stock Unit Size is required and must be positive
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 pt-2">
+            <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal" (click)="closeModal()">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="itemForm.invalid">
+              <i class="bi bi-check-circle me-2"></i>{{editMode ? 'Update' : 'Add'}} Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

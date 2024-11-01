@@ -18,44 +18,8 @@
 
 
 <div class="container-fluid pt-4 px-3">
-    <div class="row g-4 px-4">
-        <div class="col-sm-6 col-xl-3">
-            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
-                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #4b49ac;">
-                <div class="text-center text-white fw-bold">
-                    <p class="mb-2">Total Bill Amount</p>
-                    <h6 class="fw-bold mb-0 text-white">213782</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="box  rounded-pill shadow align-items-center justify-content-between p-2"
-                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem ;background-color: #7DA0FA;">
-                <div class="text-center text-white fw-bold">
-                    <p class="mb-2">Total IC Charges</p>
-                    <h6 class="fw-bold mb-0 text-white">2173821</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
-                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #7978E9;">
-                <div class="text-center text-white fw-bold">
-                    <p class="mb-2">Total Settled Amount</p>
-                    <h6 class="fw-bold mb-0 text-white">9802</h6>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6 col-xl-3">
-            <div class="box rounded-pill shadow align-items-center justify-content-between p-2"
-                style="margin: 0; font-family: 'Heebo', sans-serif; font-size: 1rem; background-color: #F3797E">
-                <div class="text-center text-white fw-bold">
-                    <p class="mb-2">Total Pending Amount</p>
-                    <h6 class="fw-bold mb-0 text-white">0.00</h6>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Metrics Cards -->
+<app-metrics-cards  [metrics]="metrics" ></app-metrics-cards>
 </div>
 
 <div class="container-fluid">
@@ -116,5 +80,7 @@
         </tbody>
     </table>
 </div>
+
+<button (click)="showNotification()" class="btn ">notification</button>
 
 <app-footer></app-footer>

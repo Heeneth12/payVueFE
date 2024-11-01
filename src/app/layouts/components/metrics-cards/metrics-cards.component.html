@@ -1,0 +1,18 @@
+  <!-- Metrics Cards -->
+  <div class="metrics-grid">
+    <div class="metric-card shadow" *ngFor="let metric of metrics; trackBy: trackByMetricTitle">
+      <div class="metric-icon">
+        <i [class]="metric.icon"></i>
+      </div>
+      <div class="metric-content">
+        <div class="metric-title">{{metric.title}}</div>
+        <div class="metric-value">{{metric.value}}</div>
+        <div *ngIf="metric.trend" class="metric-trend" [class.trend-up]="metric.trend === 'up'"
+          [class.trend-down]="metric.trend === 'down'">
+          <i [class]="'bi bi-arrow-' + metric.trend"></i>
+          <span>{{metric.trendValue}}%</span>
+          <span class="trend-label">vs last month</span>
+        </div>
+      </div>
+    </div>
+  </div>

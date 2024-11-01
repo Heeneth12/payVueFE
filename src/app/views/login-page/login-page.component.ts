@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PayVueService } from '../service/pay-vue.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -19,9 +20,9 @@ export class LoginPageComponent {
   successMessage = '';
   isLoading = false;
 
-  constructor(private fb: FormBuilder, private payVueService: PayVueService) {
+  constructor(private fb: FormBuilder, private payVueService: PayVueService , private router: Router ) {
     this.loginForm = this.fb.group({
-      number: ['', [Validators.required]], // Changed from email to number as per service
+      number: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(4)]]
     });
 
@@ -29,7 +30,7 @@ export class LoginPageComponent {
       userName: ['', Validators.required],
       userRole: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      number: ['', [Validators.required]], // Added number field for registration
+      number: ['', [Validators.required]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required],
       terms: [false, Validators.requiredTrue]
@@ -54,19 +55,24 @@ export class LoginPageComponent {
       this.isLoading = true;
       this.errorMessage = '';
       const { number, password } = this.loginForm.value;
-      
-      this.payVueService.loginUser(number, password).subscribe({
-        next: (response) => {
-          this.isLoading = false;
-          this.successMessage = 'Login successful!';
-          console.log('Login successful', response);
+  
+      this.payVueService.loginUser(number, password,
+         (response:any) => {
+          if(response.message === "success"){
+            this.isLoading = false;
+            this.successMessage = 'Login successful!';
+            sessionStorage.setItem('role', response.userRole);
+            sessionStorage.setItem('userName', response.userName);
+            this.router.navigate(['/dashboard']);
+            
+          }
         },
-        error: (error) => {
+      (error:any) => {
           this.isLoading = false;
           this.errorMessage = error.error?.message || 'Login failed. Please try again.';
           console.error('Login error:', error);
         }
-      });
+      );
     }
   }
 
@@ -82,20 +88,20 @@ export class LoginPageComponent {
         password: this.registerForm.value.password
       };
 
-      this.payVueService.registerUser(userData).subscribe({
-        next: (response) => {
+      this.payVueService.registerUser(userData,
+        (response:any) => {
           this.isLoading = false;
           this.successMessage = 'Registration successful!';
           console.log('Registration successful', response);
           // Optionally switch to login mode after successful registration
           setTimeout(() => this.switchMode(true), 2000);
         },
-        error: (error) => {
+        (error:any) => {
           this.isLoading = false;
           this.errorMessage = error.error?.message || 'Registration failed. Please try again.';
           console.error('Registration error:', error);
         }
-      });
+      );
     }
   }
 

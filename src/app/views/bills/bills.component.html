@@ -1,0 +1,146 @@
+<!-- Top Navigation -->
+<app-nav-bar></app-nav-bar>
+
+<!-- Main Content -->
+<div class="main-content" *ngIf="togglePage">
+  <!-- Search and Filter Bar -->
+  <div class="d-flex gap-1 my-2 w-100">
+    <div class="search-box">
+      <i class="bi bi-search"></i>
+      <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..."
+        class="search-input">
+    </div>
+    <div class="category-filter">
+      <select [(ngModel)]="selectedCategory" (ngModelChange)="filterItems()" class="category-select">
+        <option value="">All Categories</option>
+        <option *ngFor="let category of categories" [value]="category">
+          {{category}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Metrics Cards -->
+  <app-metrics-cards  [metrics]="metrics" ></app-metrics-cards>
+  <!-- Stock Table Section -->
+  <div class="table-section shadow">
+    <div class="table-header">
+      <h4>Inventory Items</h4>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice ID</th>
+            <th>Amount</th>
+            <th>Bill Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invoice of filteredBillsList; trackBy: trackByInvoiceId">
+            <td>{{invoice.invoiceUuid}}</td>
+            <td>{{invoice.totalAmount}}</td>
+            <td>{{invoice.billDate}}</td>
+            <td (click)="toggleBillView(invoice.invoiceUuid)">{{invoice.status}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="main-content" *ngIf="!togglePage">
+  <!-- invoice -->
+  <div class="row g-4">
+    <a (click)="toggleBillView(null)" class="text-decoration-none text-dark">
+      <i class="bi bi-arrow-left"></i> Back to invoices
+    </a>
+    <!-- Main content area -->
+    <div class="col-lg-8">
+      <!-- Invoice Header -->
+      <div class="card p-3 mb-4">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4>
+            Invoice <span class="text-primary">#{{ invoiceData.invoiceUuid }}</span> for
+            <span class="fw-bold">${{ invoiceData.totalAmount || 0 }}</span>
+          </h4>
+          <button class="btn btn-link text-decoration-none">Copy link</button>
+        </div>
+        <div class="d-flex align-items-center">
+          <span class="badge bg-primary me-2">{{ invoiceData.status }}</span>
+          <span class="text-muted">Due next month</span>
+        </div>
+        <div class="mt-3">
+          <button class="btn btn-dark me-2">Send invoice</button>
+          <button class="btn btn-outline-dark me-2">Edit invoice</button>
+          <button class="btn btn-outline-dark">Add note</button>
+        </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="mb-4">
+        <h5>History</h5>
+        <ul class="list-group">
+          <li class="list-group-item d-flex align-items-center">
+            <i class="bi bi-envelope-fill me-3"></i>
+            Invoice was sent to <strong>{{ invoiceData.issuedTo?.email }}</strong>
+            <span class="ms-auto text-muted">{{ invoiceData.createdAt }}</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Items Section -->
+      <div class="mb-4">
+        <h5>Items</h5>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Description</h6>
+          <a href="#" class="text-primary text-decoration-none">Customize columns</a>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Description</th>
+              <th>QTY</th>
+              <th>Price</th>
+              <th>Total amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let stock of invoiceData.stocks">
+              <td>{{ stock.stock_name }}</td>
+              <td>{{ stock.stock_quantity }}</td>
+              <td>${{ stock.stock_price }}</td>
+              <td>${{ stock.stock_quantity * stock.stock_price }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Sidebar for Details and Ask Us -->
+    <div class="col-lg-4">
+      <!-- Details Section -->
+      <div class="card p-3 mb-4">
+        <h5>Details</h5>
+        <div>
+          <p class="mb-2"><strong>{{ invoiceData.issuedTo?.userName }}</strong></p>
+          <p class="text-muted mb-2">{{ invoiceData.issuedTo?.email }}</p>
+          <p class="text-muted mb-2"><i class="bi bi-calendar me-2"></i> {{ invoiceData.createdAt }}</p>
+          <p class="text-muted"><i class="bi bi-hash me-2"></i>#{{ invoiceData.invoiceUuid }}</p>
+        </div>
+        <button class="btn btn-primary w-100">Invoice PDF</button>
+      </div>
+
+      <!-- Ask Us Section -->
+      <div class="card p-3">
+        <h5>Ask us</h5>
+        <p>If you have a question or encounter a problem, we can help you any time.</p>
+        <button class="btn btn-primary w-100">Ask a question</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>
