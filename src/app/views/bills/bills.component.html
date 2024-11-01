@@ -4,7 +4,7 @@
 <!-- Main Content -->
 <div class="main-content" *ngIf="togglePage">
   <!-- Search and Filter Bar -->
-  <div class="d-flex gap-1 my-2 w-100">
+  <div class="d-flex gap-1 w-100">
     <div class="search-box">
       <i class="bi bi-search"></i>
       <input type="text" [(ngModel)]="searchTerm" (ngModelChange)="filterItems()" placeholder="Search items..."
@@ -25,9 +25,8 @@
   <!-- Stock Table Section -->
   <div class="table-section shadow">
     <div class="table-header">
-      <h4>Inventory Items</h4>
+      <h5>Inventory Items</h5>
     </div>
-
     <div class="table-container">
       <table>
         <thead>
