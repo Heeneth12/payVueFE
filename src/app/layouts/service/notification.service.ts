@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { NotificationMessage } from '../model/notification.model';
 
-interface NotificationMessage {
-  type: 'success' | 'error' | 'info';
-  text: string;
-}
+
 
 @Injectable({
   providedIn: 'root'

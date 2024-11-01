@@ -42,7 +42,7 @@ export class PayVueService {
 
   // Create or Update Stock
   addStock(stock: StockItem ,successfn: any, errorfn: any): any {
-    return this.httpService.postHttp(`${this.apiUrl}/stock` , stock ,successfn, errorfn )
+    return this.httpService.postHttp(`${this.apiUrl}/stock/save` , stock ,successfn, errorfn )
   }
 
   // Get All Stocks
@@ -58,5 +58,10 @@ export class PayVueService {
   // Delete Stock by ID
   deleteStockById(id: string,successfn:any, errorfn:any): any {
     return this.httpService.deleteHttp(`${this.apiUrl}/stock/${id}`, successfn, errorfn)
+  }
+
+  updateStocks(stock: StockItem ,successfn: any, errorfn: any){
+    return this.httpService.postHttp(`${this.apiUrl}/stock/update`,stock,successfn , errorfn)
+
   }
 }
