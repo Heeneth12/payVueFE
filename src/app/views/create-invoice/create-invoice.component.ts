@@ -17,28 +17,55 @@ export class CreateInvoiceComponent {
   invoiceNumber = 'INV2398-08-087';
   searchTerm: string = '';
   totalAmount: Number = 0;
-  showProductSearch: boolean = false;
+  showProductSearch: boolean = true;
   selectedProductIndex: number | null = null;
   currentDate: Date = new Date();
   formattedDate: string = this.currentDate.toISOString().split('T')[0];
 
-  stockList:StockItem[] =[];
+  client: any = {};
 
-  constructor(private fb: FormBuilder,private payVueService: PayVueService) {
+  invoiceData = {
+    invoiceNumber: 'INV-2022-010',
+    issuedDate: '11 Jan 2022',
+    dueDate: '18 Jan 2022',
+    status: 'Pending',
+    amountDue: 4800,
+    client: {
+      name: 'Zaky Grizzly',
+      email: 'grizzly@monlight.com',
+      address: '9 Acacia Drive Rome, NY 13440, USA'
+    },
+    paymentMethod: 'Wire Transfer',
+    accountNumber: '9700 0023 4200 2900',
+    items: [
+      {
+        description: 'Payment Project - Monlight Mobile Design',
+        hours: 120,
+        rate: 40,
+        tax: 0,
+        total: 4800
+      }
+    ]
+  };
+
+  stockList: StockItem[] = [];
+
+  constructor(private fb: FormBuilder, private payVueService: PayVueService) {
     this.invoiceForm = this.fb.group({
       createdBy: ['1', Validators.required],
       issuedTo: ['2',],
       subject: ['Service per June 2023', Validators.required],
       products: this.fb.array([]),
-      createdAt: [this.formattedDate , Validators.required],
+      createdAt: [this.formattedDate, Validators.required],
       addDiscount: [true],
-      totalAmount:this.totalAmount,
-      status:["success"],
+      totalAmount: this.totalAmount,
+      status: ["success"],
     });
   }
 
   ngOnInit(): void {
     this.loadAllStocks();
+    this.getUser("6304781014");
   }
 
   get products(): FormArray {
@@ -55,7 +82,17 @@ export class CreateInvoiceComponent {
       stock_type: [product?.stock_type || '']
     });
   }
-  
+
+  // Declare properties
+isFocused: boolean = false;
+
+// Method to handle input blur
+onBlur() {
+  // Delay hiding the list to allow click events on items
+  setTimeout(() => {
+    this.isFocused = false;
+  }, 200);
+}
 
   addProduct(): void {
     this.showProductSearch = true;
@@ -64,11 +101,11 @@ export class CreateInvoiceComponent {
 
   loadAllStocks(): void {
     this.payVueService.getAllStocks(
-      (response:any) => {
+      (response: any) => {
         console.log(response);
-         this.stockList = response.data;
+        this.stockList = response.data;
       },
-      (error:any) => console.error('Error fetching stock items:', error)
+      (error: any) => console.error('Error fetching stock items:', error)
     );
   }
 
@@ -82,7 +119,7 @@ export class CreateInvoiceComponent {
         stock_price: product.stock_price,
         stock_type: product.stock_type
       });
-    } else {  
+    } else {
       // Add new product
       this.products.push(this.createProduct(product));
     }
@@ -105,7 +142,7 @@ export class CreateInvoiceComponent {
   }
 
   get filteredProducts(): StockItem[] {
-    return this.stockList.filter(product => 
+    return this.stockList.filter(product =>
       product.stock_name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
       product.stock_type.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
@@ -148,5 +185,18 @@ export class CreateInvoiceComponent {
     }
   }
   
+  //GetUser
+  getUser(mobileNumber: string) {
+    this.payVueService.getUserByNumber(mobileNumber,
+      (response: any) => {
+        if (response.data) {
+          this.client = response.data;
+        }
+      },
+      (error: any) => {
+        console.error('Error creating invoice:', error);
+      }
+    )
+  }
 
 }
