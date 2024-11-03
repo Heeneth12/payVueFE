@@ -23,6 +23,10 @@ export class PayVueService {
      return this.httpService.postHttp(`${this.apiUrl}/user/register`, userDate, successfn, errorfn)
   }
 
+  getUserByNumber(userMobileNumber:string, successfn: any, errorfn: any):any{
+    return this.httpService.getHttp(`${this.apiUrl}/user/${userMobileNumber}`, successfn, errorfn)
+  }
+
   //Invoice
 
   createInvoice(invoice:any,successfn: any, errorfn: any){

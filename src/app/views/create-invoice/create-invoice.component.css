@@ -12,9 +12,49 @@
   max-width: 100px;
 }
 
-.table th, .table td {
-  vertical-align: middle;
+/* Table Section */
+.table-section {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.8rem;
+  text-align: left;
+  border-bottom: 1px solid #dee2e6;
+}
+
+th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+}
+
+.quantity-input {
+  width: 80px;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.25rem;
+}
+
 
 .btn-link {
   color: #007bff;
@@ -51,11 +91,6 @@
   margin: 0;
 }
 
-.table th, .table td {
-  font-size: 0.9rem;
-  text-align: center;
-  vertical-align: middle;
-}
 
 .payment-details h6 {
   font-size: 1rem;
@@ -98,4 +133,43 @@ hr {
   background-color: #f5f5f7;
   border: 1px solid #e8e8e8;
   border-radius: 50%;
+}
+
+.invoice-container {
+  padding: 20px;
+}
+
+.invoice-header h4 {
+  margin: 0;
+}
+
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+}
+
+.table th {
+  color: #6c757d;
+}
+
+.btn-link {
+  color: #6c757d;
+  font-size: 14px;
+}
+
+.text-primary {
+  color: #4f46e5 !important;
+}
+
+.text-danger {
+  color: #dc3545;
+}
+
+.btn-primary {
+  background-color: #4f46e5;
+  border-color: #4f46e5;
 }

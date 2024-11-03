@@ -27,7 +27,7 @@ export class BillsComponent implements OnInit {
 
   categories: string[] = ['Mobile', 'Laptop', 'Accessories', 'Others'];
   metrics: StockMetric[] = [
-    { title: 'Total Items', value: 0, icon: 'bi-box-seam', trend: 'up', trendValue: 12 },
+    { title: 'Total Items', value: 0, icon: 'bi bi-receipt', trend: 'up', trendValue: 12 },
     { title: 'Total Value', value: '$0', icon: 'bi-currency-dollar', trend: 'up', trendValue: 8 },
     { title: 'Low Stock Items', value: 0, icon: 'bi-exclamation-triangle', trend: 'down', trendValue: 5 },
     { title: 'Out of Stock', value: 0, icon: 'bi-x-circle' , trend: 'down' ,trendValue :2},
