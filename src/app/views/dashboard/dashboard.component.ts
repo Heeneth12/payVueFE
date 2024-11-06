@@ -5,11 +5,12 @@ import { FooterComponent } from "../../layouts/components/footer/footer.componen
 import { MetricsCardsComponent } from "../../layouts/components/metrics-cards/metrics-cards.component";
 import { StockMetric } from '../../layouts/model/stockMetric.model';
 import { NotificationService } from '../../layouts/service/notification.service';
+import { DropdownComponent } from "../../layouts/components/dropdown/dropdown.component";
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavBarComponent, NgbDropdownModule, FooterComponent, MetricsCardsComponent],
+  imports: [NavBarComponent, NgbDropdownModule, FooterComponent, MetricsCardsComponent, DropdownComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })

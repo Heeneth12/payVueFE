@@ -95,14 +95,9 @@
                         <!-- Add more tax options here if needed -->
                       </select>
                     </td>
-
                     <!-- Actions -->
                     <td>
                       <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-outline-primary btn-sm rounded-circle"
-                          (click)="editProduct(i)" title="Edit">
-                          <i class="bi bi-pencil"></i>
-                        </button>
                         <button type="button" class="btn btn-outline-danger btn-sm rounded-circle"
                           (click)="removeProduct(i)" title="Delete">
                           <i class="bi bi-trash"></i>
@@ -154,7 +149,7 @@
       <!-- Amount Due -->
       <div class="card p-3 mb-4">
         <h5>Amount Due</h5>
-        <h3 class="text-primary">{{ invoiceData.amountDue | currency }}</h3>
+        <h3 class="text-primary">{{calculateTotal() |currency}}</h3>
         <p class="text-danger">Due on {{ invoiceData.dueDate }}</p>
         <button class="btn btn-primary w-100">Send Invoice</button>
       </div>

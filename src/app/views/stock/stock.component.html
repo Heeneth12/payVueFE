@@ -1,9 +1,8 @@
 <!-- Top Navigation -->
 <app-nav-bar></app-nav-bar>
-
 <!-- Main Content -->
 <div class="main-content">
-  <!-- Search and Filter Bar -->
+  <!-- Search hand Filter Bar -->
   <div class="d-flex gap-1 w-100">
     <div class="search-box">
       <i class="bi bi-search"></i>
@@ -21,7 +20,7 @@
   </div>
 
   <!-- Metrics Cards -->
-  <app-metrics-cards [metrics]="metrics" ></app-metrics-cards>
+  <app-metrics-cards [metrics]="metrics"></app-metrics-cards>
 
   <!-- Stock Table Section -->
   <div class="table-section shadow">
@@ -40,6 +39,8 @@
             <th>Item Name</th>
             <th>Type</th>
             <th>Quantity</th>
+            <th>units</th>
+            <th>price</th>
             <th>Unit Price</th>
             <th>Total Value</th>
             <th>Last Updated</th>
@@ -54,12 +55,21 @@
               <input type="number" class="quantity-input" [(ngModel)]="item.stock_quantity"
                 (ngModelChange)="updateItem(item)">
             </td>
+            <td>
+              <input class="quantity-input" [(ngModel)]="item.stock_unit" (ngModelChange)="updateItem(item)">
+            </td>
+            <td>price</td>
             <td>{{item.stock_price | currency}}</td>
             <td>{{item.stock_price * item.stock_quantity | currency}}</td>
-            <td>{{item.updated_at}}</td>
+            <td>{{item.updated_at| date:'yyyy-MM-dd'}}</td>
             <td class="actions-cell">
-              <button class="action-btn edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editItem(item)">
+              <button class="action-btn edit-btn" data-bs-toggle="modal" data-bs-target="#staticBackdrop"
+                (click)="editItem(item)">
                 <i class="bi bi-pencil"></i>
+              </button>
+              <button class="action-btn add-btn" data-bs-toggle="modal" data-bs-target="#addModel"
+                (click)="addItem(item.stock_uuid)">
+                <i class="bi bi-plus-square"></i>
               </button>
               <button class="action-btn delete-btn" (click)="deleteItem(item.stock_uuid)">
                 <i class="bi bi-trash"></i>
@@ -74,20 +84,24 @@
 
 
 <!-- Modal -->
-<div #staticBackdrop class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div #staticBackdrop class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"
+  tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header bg-light">
         <h4 class="modal-title fw-bold text-primary">{{editMode ? 'Edit Item' : 'Add New Item'}}</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="closeModal()"></button>
       </div>
       <div class="modal-body p-4">
         <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
           <!-- Item Name - Full Width -->
           <div class="mb-2">
             <label for="name" class="form-label fw-semibold">Item Name</label>
-            <input type="text" class="form-control form-control-lg" id="name" formControlName="name" placeholder="Enter item name">
-            <div class="text-danger small mt-1" *ngIf="itemForm.controls.name.invalid && itemForm.controls.name.touched">
+            <input type="text" class="form-control form-control-lg" id="name" formControlName="name"
+              placeholder="Enter item name">
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.name.invalid && itemForm.controls.name.touched">
               Item Name is required
             </div>
           </div>
@@ -101,64 +115,79 @@
                 {{category}}
               </option>
             </select>
-            <div class="text-danger small mt-1" *ngIf="itemForm.controls.category.invalid && itemForm.controls.category.touched">
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.category.invalid && itemForm.controls.category.touched">
               Category is required
+            </div>
+          </div>
+          <!-- Category - Full Width -->
+          <div class="mb-2">
+            <label for="unitPrice" class="form-label fw-semibold">Price</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control form-control-lg" id="price" formControlName="price" min="0.01"
+                step="0.01">
+            </div>
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.price.invalid && itemForm.controls.price.touched">
+              Unit Price is required and must be positive
             </div>
           </div>
 
           <!-- Two columns layout for number inputs -->
           <div class="row g-2">
+
+
             <!-- Quantity -->
             <div class="col-12 col-md-6">
               <div class="mb-3">
-                <label for="quantity" class="form-label fw-semibold">Quantity</label>
+                <!-- Dropdown to select Quantity or Units -->
+                <label for="unitPrice" class="form-label fw-semibold">{{selectedInput}}</label>
                 <div class="input-group">
-                  <input type="number" class="form-control form-control-lg" id="quantity" formControlName="quantity" min="1" step="1">
-                  <span class="input-group-text"><i class="bi bi-boxes"></i></span>
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ selectedInput }}
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" (click)="selectInput('Quantity')">Quantity</a></li>
+                    <li><a class="dropdown-item" (click)="selectInput('Units')">Units</a></li>
+                  </ul>
+
+                  <!-- Conditional input field based on selection -->
+                  <input *ngIf="selectedInput === 'Quantity'" type="number" class="form-control form-control-lg"
+                    formControlName="quantity" id="quantity" min="1" step="1" placeholder="Enter Quantity"
+                    aria-label="Quantity input" />
+                  <input *ngIf="selectedInput === 'Units'" type="number" class="form-control form-control-lg"
+                    formControlName="units" id="units" min="1" step="1" placeholder="Enter Units"
+                    aria-label="Units input" />
                 </div>
-                <div class="text-danger small mt-1" *ngIf="itemForm.controls.quantity.invalid && itemForm.controls.quantity.touched">
+
+                <!-- Validation messages -->
+                <div
+                  *ngIf="selectedInput === 'Quantity' && itemForm.controls.quantity.invalid && itemForm.controls.quantity.touched"
+                  class="text-danger small mt-1">
                   Quantity must be at least 1
                 </div>
-              </div>
-            </div>
-
-            <!-- Unit Price -->
-            <div class="col-12 col-md-6">
-              <div class="mb-3">
-                <label for="unitPrice" class="form-label fw-semibold">Price</label>
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
-                  <input type="number" class="form-control form-control-lg" id="price" formControlName="price" min="0.01" step="0.01">
-                </div>
-                <div class="text-danger small mt-1" *ngIf="itemForm.controls.price.invalid && itemForm.controls.price.touched">
-                  Unit Price is required and must be positive
+                <div
+                  *ngIf="selectedInput === 'Units' && itemForm.controls.units.invalid && itemForm.controls.units.touched"
+                  class="text-danger small mt-1">
+                  Units must be at least 1
                 </div>
               </div>
             </div>
 
-            <!-- Stock Unit -->
-            <div class="col-12 col-md-6">
-              <div class="mb-3">
-                <label for="unit" class="form-label fw-semibold">Units</label>
-                <div class="input-group">
-                  <input type="number" class="form-control form-control-lg" id="units" formControlName="units" min="1" step="1">
-                  <span class="input-group-text"><i class="bi bi-box-seam"></i></span>
-                </div>
-                <div class="text-danger small mt-1" *ngIf="itemForm.controls.units.invalid && itemForm.controls.units.touched">
-                  Stock Unit is required and must be positive
-                </div>
-              </div>
-            </div>
 
             <!-- Stock Unit Size -->
             <div class="col-12 col-md-6">
               <div class="mb-3">
                 <label for="unitSize" class="form-label fw-semibold">Unit Size</label>
                 <div class="input-group">
-                  <input type="number" class="form-control form-control-lg" id="unitSize" formControlName="unitSize" min="1" step="1">
+                  <input type="number" class="form-control form-control-lg" id="unitSize" formControlName="unitSize"
+                    min="1" step="1">
                   <span class="input-group-text"><i class="bi bi-rulers"></i></span>
                 </div>
-                <div class="text-danger small mt-1" *ngIf="itemForm.controls.unitSize.invalid && itemForm.controls.unitSize.touched">
+                <div class="text-danger small mt-1"
+                  *ngIf="itemForm.controls.unitSize.invalid && itemForm.controls.unitSize.touched">
                   Stock Unit Size is required and must be positive
                 </div>
               </div>
@@ -166,7 +195,133 @@
           </div>
 
           <div class="modal-footer border-0 pt-2">
-            <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal" (click)="closeModal()">
+            <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal"
+              (click)="closeModal()">
+              <i class="bi bi-x-circle me-2"></i>Cancel
+            </button>
+            <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="itemForm.invalid">
+              <i class="bi bi-check-circle me-2"></i>{{editMode ? 'Update' : 'Add'}} Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- add-Modal -->
+<div #addModel class="modal fade" id="addModel" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h4 class="modal-title fw-bold text-primary">Add items-model</h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <form [formGroup]="itemForm" (ngSubmit)="saveItem()">
+          <!-- Item Name - Full Width -->
+          <div class="mb-2">
+            <label for="name" class="form-label fw-semibold">Item Name</label>
+            <input type="text" class="form-control form-control-lg" id="name" formControlName="name"
+              placeholder="Enter item name">
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.name.invalid && itemForm.controls.name.touched">
+              Item Name is required
+            </div>
+          </div>
+
+          <!-- Category - Full Width -->
+          <div class="mb-2">
+            <label for="category" class="form-label fw-semibold">Category</label>
+            <select class="form-select form-select-lg" id="category" formControlName="category">
+              <option value="" disabled>Select Category</option>
+              <option *ngFor="let category of categories" [value]="category">
+                {{category}}
+              </option>
+            </select>
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.category.invalid && itemForm.controls.category.touched">
+              Category is required
+            </div>
+          </div>
+          <!-- Category - Full Width -->
+          <div class="mb-2">
+            <label for="unitPrice" class="form-label fw-semibold">Price</label>
+            <div class="input-group">
+              <span class="input-group-text">$</span>
+              <input type="number" class="form-control form-control-lg" id="price" formControlName="price" min="0.01"
+                step="0.01">
+            </div>
+            <div class="text-danger small mt-1"
+              *ngIf="itemForm.controls.price.invalid && itemForm.controls.price.touched">
+              Unit Price is required and must be positive
+            </div>
+          </div>
+
+          <!-- Two columns layout for number inputs -->
+          <div class="row g-2">
+
+
+            <!-- Quantity -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <!-- Dropdown to select Quantity or Units -->
+                <label for="unitPrice" class="form-label fw-semibold">{{selectedInput}}</label>
+                <div class="input-group">
+                  <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ selectedInput }}
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" (click)="selectInput('Quantity')">Quantity</a></li>
+                    <li><a class="dropdown-item" (click)="selectInput('Units')">Units</a></li>
+                  </ul>
+
+                  <!-- Conditional input field based on selection -->
+                  <input *ngIf="selectedInput === 'Quantity'" type="number" class="form-control form-control-lg"
+                    formControlName="quantity" id="quantity" min="1" step="1" placeholder="Enter Quantity"
+                    aria-label="Quantity input" />
+                  <input *ngIf="selectedInput === 'Units'" type="number" class="form-control form-control-lg"
+                    formControlName="units" id="units" min="1" step="1" placeholder="Enter Units"
+                    aria-label="Units input" />
+                </div>
+
+                <!-- Validation messages -->
+                <div
+                  *ngIf="selectedInput === 'Quantity' && itemForm.controls.quantity.invalid && itemForm.controls.quantity.touched"
+                  class="text-danger small mt-1">
+                  Quantity must be at least 1
+                </div>
+                <div
+                  *ngIf="selectedInput === 'Units' && itemForm.controls.units.invalid && itemForm.controls.units.touched"
+                  class="text-danger small mt-1">
+                  Units must be at least 1
+                </div>
+              </div>
+            </div>
+
+
+            <!-- Stock Unit Size -->
+            <div class="col-12 col-md-6">
+              <div class="mb-3">
+                <label for="unitSize" class="form-label fw-semibold">Unit Size</label>
+                <div class="input-group">
+                  <input type="number" class="form-control form-control-lg" id="unitSize" formControlName="unitSize"
+                    min="1" step="1">
+                  <span class="input-group-text"><i class="bi bi-rulers"></i></span>
+                </div>
+                <div class="text-danger small mt-1"
+                  *ngIf="itemForm.controls.unitSize.invalid && itemForm.controls.unitSize.touched">
+                  Stock Unit Size is required and must be positive
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer border-0 pt-2">
+            <button type="button" class="btn btn-outline-secondary btn-lg px-4" data-bs-dismiss="modal"
+              (click)="closeModal()">
               <i class="bi bi-x-circle me-2"></i>Cancel
             </button>
             <button type="submit" class="btn btn-primary btn-lg px-4" [disabled]="itemForm.invalid">

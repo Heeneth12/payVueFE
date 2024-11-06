@@ -78,7 +78,7 @@ export class CreateInvoiceComponent {
       stock_name: [product?.stock_name || '', Validators.required],
       stock_price: [product?.stock_price || 0, Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
-      tax: [10],
+      tax: [2],
       stock_type: [product?.stock_type || '']
     });
   }
@@ -126,11 +126,6 @@ onBlur() {
     this.closeProductSearch();
   }
 
-  editProduct(index: number): void {
-    this.selectedProductIndex = index;
-    this.showProductSearch = true;
-  }
-
   removeProduct(index: number): void {
     this.products.removeAt(index);
   }
@@ -153,6 +148,7 @@ onBlur() {
       const price = product.get('stock_price')?.value || 0;
       const quantity = product.get('quantity')?.value || 0;
       this.totalAmount = total + (price * quantity);
+      console.log()
       return total + (price * quantity);
     }, 0);
   }
