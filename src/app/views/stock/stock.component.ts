@@ -24,6 +24,7 @@ export class StockComponent implements OnInit {
   showModal: boolean = false;
   editMode: boolean = false;
   currentItemId: string | null = null;
+  selectedInput: string = 'Quantity';
 
   @ViewChild('staticBackdrop') modalElement!: ElementRef;
 
@@ -50,7 +51,6 @@ export class StockComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadAllStocks();
-
     this.updateMetrics();
     this.filterItems();
   }
@@ -60,7 +60,6 @@ export class StockComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.items = response.data;
-
         this.updateMetrics();
         this.filterItems();
       },
@@ -133,16 +132,32 @@ export class StockComponent implements OnInit {
     this.showModal = true;
   }
 
+  addItem(stock_uuid: string | null):void{
+
+
+  }
+
+  selectInput(input: string): void {
+    this.selectedInput = input;
+    // Reset touched status and value when switching input type
+    if (input === 'Quantity') {
+      this.itemForm.controls.units.reset();
+    } else {
+      this.itemForm.controls.quantity.reset();
+    }
+  }
 
   closeModal(): void {
     this.showModal = false;
     this.editMode = false;
     this.currentItemId = null;
+    this.itemForm.reset();
   }
 
   closeModalRef() {
     const modalInstance = bootstrap.Modal.getInstance(this.modalElement.nativeElement) || new bootstrap.Modal(this.modalElement.nativeElement);
     modalInstance.hide();  // Hide the modal programmatically
+    this.itemForm.reset();
   }
 
   deleteItem(stock_uuid: string | null): void {
